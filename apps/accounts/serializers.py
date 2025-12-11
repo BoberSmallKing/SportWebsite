@@ -27,7 +27,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
     
-class UserRegistrationSerializer(serializers.Serializer):
+class UserLoginSerializer(serializers.Serializer):
     number = serializers.DecimalField()
     password = serializers.CharField(write_only=True)
     
