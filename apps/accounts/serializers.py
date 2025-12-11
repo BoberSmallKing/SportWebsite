@@ -12,7 +12,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ("full_name", "bio", "password", "password_confirm")
+        fields = ("username", "full_name", "bio", "number", "password", "password_confirm")
         
     
     def validate(self, attrs):
@@ -27,8 +27,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
     
+    
 class UserLoginSerializer(serializers.Serializer):
-    number = serializers.DecimalField()
+    number = serializers.DecimalField(max_digits=11, decimal_places=0)
     password = serializers.CharField(write_only=True)
     
     def validate(self, attrs):

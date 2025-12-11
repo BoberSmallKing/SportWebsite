@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import login
 
-from models import User
+from .models import User
 from .serializers import *
 
 class RegisterView(generics.CreateAPIView):
@@ -37,12 +37,12 @@ class LoginView(generics.GenericAPIView):
         
         login(request, user)
         
-        RefreshToken = RefreshToken.from_user(user)
+        refresh = RefreshToken.for_user(user)
         
         return Response({
             'user': UserRegistrationSerializer(user).data,
-            'refresh': str(RefreshToken),
-            'access': str(RefreshToken.access_token),
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
             'message': 'User login succesfully'
         }, status=status.HTTP_200_OK)
         
