@@ -7,13 +7,12 @@ class UserAdmin(BaseUserAdmin):
     list_display = ('number', 'username', 'full_name', 'is_active', 'created_at')
     list_filter = ('is_active', 'is_staff', 'is_superuser', 'created_at')
     search_fields = ('number', 'username', 'full_name')
-    ordering = ('-created_at',)
     
     fieldsets = (
         (None, {'fields': ('number', 'username', 'password')}),
         ('Personal Info', {'fields': ('full_name', 'bio')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined', 'created_at', 'updated_at')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     
     add_fieldsets = (
