@@ -20,34 +20,7 @@ class User(AbstractUser):
     def __str__(self):
         return self.full_name
     
-class Sportsmen(models.Model):
-    full_name = models.CharField(max_length=200)
-    photo = models.ImageField(upload_to='sportsmen_photos/',blank=True,null=True)
-    description = models.TextField(max_length=1000)
-    number = models.DecimalField(max_digits=11, decimal_places=0, unique=True, blank=True,null=True)
-    achievement = models.TextField(
-        help_text="Каждое достижение с новой строки"
-    )
 
-    RATING_CHOICES = [
-        ('red', 'Красный'),
-        ('green', 'Зеленый'),
-        ('diamond', 'Алмазный'),
-        ('gold', 'Золотой'),
-    ]
-
-    rating = models.CharField(
-        max_length=10,
-        choices=RATING_CHOICES,
-        default='green'
-    )
-
-    def get_achievements_list(self):
-        return [a.strip() for a in self.achievement.split('\n') if a.strip()]
-
-    def __str__(self):
-        return self.full_name
-    
     
 
 

@@ -57,8 +57,5 @@ class UserLoginSerializer(serializers.Serializer):
                 'Must include "email" and "password"!'
             )
             
-            
-            
-
         
     
