@@ -4,5 +4,5 @@ from .models import Sportsmen
 class SportsmenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sportsmen
-        fields = "__all__"
+        fields = ("id", "full_name", "photo", "description", "number", "achievement", "rating")
         read_only_fields = ("coach",)
