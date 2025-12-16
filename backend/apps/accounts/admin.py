@@ -2,22 +2,26 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User
 
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    list_display = ('number', 'username', 'full_name', 'is_active', 'created_at')
-    list_filter = ('is_active', 'is_staff', 'is_superuser', 'created_at')
-    search_fields = ('number', 'username', 'full_name')
-    
+    ordering = ('number',)
+    list_display = ('number', 'full_name', 'is_active', 'is_staff', 'is_superuser')
+    search_fields = ('number', 'full_name')
+
+    # Убираем username
     fieldsets = (
-        (None, {'fields': ('number', 'username', 'password')}),
-        ('Personal Info', {'fields': ('full_name', 'bio')}),
+        (None, {'fields': ('number', 'password')}),
+        ('Personal info', {'fields': ('full_name', 'bio')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+        ('Important dates', {'fields': ('last_login', 'created_at')}),
     )
-    
+
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('number', 'username', 'password1', 'password2'),
+            'fields': ('number', 'full_name', 'password1', 'password2'),
         }),
     )
+
+    filter_horizontal = ('groups', 'user_permissions')

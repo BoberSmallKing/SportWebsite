@@ -13,10 +13,10 @@ class Sportsmen(models.Model):
     )
 
     RATING_CHOICES = [
-        ('red', 'Красный'),
-        ('green', 'Зеленый'),
-        ('diamond', 'Алмазный'),
         ('gold', 'Золотой'),
+        ('diamond', 'Алмазный'),
+        ('green', 'Зеленый'),
+        ('red', 'Красный'),
     ]
 
     rating = models.CharField(

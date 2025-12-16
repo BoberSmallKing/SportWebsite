@@ -1,10 +1,14 @@
 import { useState } from "react";
-import api from "../api/api";
-import { register as registerUser } from "../services/authService";
+import { register } from "../services/authService";
+
+import AuthLayout from "../components/layout/AuthLayout";
+import Input from "../components/ui/Input";
+import Button from "../components/ui/Button";
+import FormError from "../components/ui/FormError";
+import { validateField } from "../utils/validators";
 
 function Register() {
   const [form, setForm] = useState({
-    username: "",
     full_name: "",
     bio: "",
     number: "",
@@ -12,116 +16,112 @@ function Register() {
     password_confirm: ""
   });
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  const [serverError, setServerError] = useState("");
 
   function handleChange(e) {
-    setForm({
+    const { name, value } = e.target;
+
+    setForm(prev => ({ ...prev, [name]: value }));
+
+    const error = validateField(name, value, {
       ...form,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+
+    setErrors(prev => ({ ...prev, [name]: error }));
+  }
+
+  function handleBlur(e) {
+    setTouched(prev => ({ ...prev, [e.target.name]: true }));
+  }
+
+  function validateForm() {
+    const newErrors = {};
+    for (const key in form) {
+      newErrors[key] = validateField(key, form[key], form);
+    }
+
+    setErrors(newErrors);
+    setTouched(
+      Object.keys(form).reduce((a, k) => ({ ...a, [k]: true }), {})
+    );
+
+    return Object.values(newErrors).every(e => !e);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setServerError("");
 
-    if (form.password !== form.password_confirm) {
-      setError("Пароли не совпадают");
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
-      const data = await registerUser(form);
-
-      api.defaults.headers.common["Authorization"] = "Bearer " + data.access;
-
-      setSuccess("Регистрация успешна!");
-    } catch (err) {
-      console.error(err);
-      setError("Ошибка регистрации. Проверьте данные.");
+      await register(form);
+    } catch {
+      setServerError("Ошибка при отправке заявки");
     }
   }
 
   return (
-    <div style={{ maxWidth: 450, margin: "40px auto" }}>
-      <h2>Регистрация</h2>
-
+    <AuthLayout title="Подача заявки">
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: 15 }}>
-          <label>Логин (username)</label>
-          <input
-            type="text"
-            name="username"
-            value={form.username}
-            onChange={handleChange}
-            placeholder="Логин"
-          />
-        </div>
+        <Input
+          label="Полное имя"
+          name="full_name"
+          value={form.full_name}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.full_name && errors.full_name}
+        />
 
-        <div style={{ marginBottom: 15 }}>
-          <label>Полное имя</label>
-          <input
-            type="text"
-            name="full_name"
-            value={form.full_name}
-            onChange={handleChange}
-            placeholder="Полное имя"
-          />
-        </div>
+        <Input
+          label="Биография"
+          name="bio"
+          textarea
+          value={form.bio}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.bio && errors.bio}
+          placeholder="Коротко о себе и своём опыте"
+        />
 
-        <div style={{ marginBottom: 15 }}>
-          <label>Номер телефона</label>
-          <input
-            type="text"
-            name="number"
-            value={form.number}
-            onChange={handleChange}
-            placeholder="Введите номер"
-          />
-        </div>
+        <Input
+          label="Телефон"
+          name="number"
+          value={form.number}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.number && errors.number}
+        />
 
-        <div style={{ marginBottom: 15 }}>
-          <label>Биография</label>
-          <textarea
-            name="bio"
-            value={form.bio}
-            onChange={handleChange}
-            placeholder="О себе"
-          />
-        </div>
+        <Input
+          label="Пароль"
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.password && errors.password}
+        />
 
-        <div style={{ marginBottom: 15 }}>
-          <label>Пароль</label>
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Пароль"
-          />
-        </div>
+        <Input
+          label="Повтор пароля"
+          type="password"
+          name="password_confirm"
+          value={form.password_confirm}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.password_confirm && errors.password_confirm}
+        />
 
-        <div style={{ marginBottom: 15 }}>
-          <label>Повторите пароль</label>
-          <input
-            type="password"
-            name="password_confirm"
-            value={form.password_confirm}
-            onChange={handleChange}
-            placeholder="Повторите пароль"
-          />
-        </div>
+        <FormError message={serverError} />
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
-
-        <button type="submit" style={{ padding: 10, width: "100%" }}>
-          Зарегистрироваться
-        </button>
+        <Button type="submit">Отправить заявку</Button>
+        <p className="auth-under-text">У Вас есть заявка? <a style={{color: "red"}} href="/login">Войти</a></p>
       </form>
-    </div>
+    </AuthLayout>
   );
 }
 
