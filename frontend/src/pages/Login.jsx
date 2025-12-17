@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { login } from "../services/authService";
 import api from "../api/api";
 
@@ -12,8 +14,9 @@ function Login() {
   const [form, setForm] = useState({
     number: "",
     password: ""
-  });
+  }); 
 
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [serverError, setServerError] = useState("");
@@ -51,14 +54,16 @@ function Login() {
     e.preventDefault();
     setServerError("");
     if (!validateForm()) return;
-  
     try {
       const data = await login({
         number: form.number,
         password: form.password
       });
   
-      api.defaults.headers.common.Authorization = `Bearer ${data.access}`;
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${data.access}`;
+      navigate("/")
     } catch {
       setServerError("Неверный номер телефона или пароль");
     }

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { register } from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
 import AuthLayout from "../components/layout/AuthLayout";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import FormError from "../components/ui/FormError";
 import { validateField } from "../utils/validators";
+import api from "../api/api";
 
 function Register() {
   const [form, setForm] = useState({
@@ -16,6 +18,7 @@ function Register() {
     password_confirm: ""
   });
 
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [serverError, setServerError] = useState("");
@@ -58,7 +61,17 @@ function Register() {
     if (!validateForm()) return;
 
     try {
-      await register(form);
+      const data = await register({
+        full_name: form.full_name,
+        bio: form.bio,
+        number: form.number,
+        password: form.password,
+        password_confirm: form.password_confirm
+      });
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${data.access}`;
+    navigate("/")
     } catch {
       setServerError("Ошибка при отправке заявки");
     }
@@ -68,7 +81,7 @@ function Register() {
     <AuthLayout title="Подача заявки">
       <form onSubmit={handleSubmit}>
         <Input
-          label="Полное имя"
+          label="ФИО"
           name="full_name"
           value={form.full_name}
           onChange={handleChange}
@@ -119,7 +132,7 @@ function Register() {
         <FormError message={serverError} />
 
         <Button type="submit">Отправить заявку</Button>
-        <p className="auth-under-text">У Вас есть заявка? <a style={{color: "red"}} href="/login">Войти</a></p>
+        <p className="auth-under-text">У Вас есть аккаунт? <a style={{color: "red"}} href="/login">Войти</a></p>
       </form>
     </AuthLayout>
   );

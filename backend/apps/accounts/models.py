@@ -6,7 +6,7 @@ class User(AbstractUser):
     
     full_name = models.CharField(max_length=200)
     bio = models.TextField(max_length=500)
-    number = models.DecimalField(max_digits=11, decimal_places=0, unique=True)
+    number = models.CharField(max_length=12, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)

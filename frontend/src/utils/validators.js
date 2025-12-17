@@ -12,7 +12,7 @@ export function validateField(name, value, form = {}) {
         return "";
   
       case "password":
-        if (value.length < 6) return "Минимум 8 символов";
+        if (value.length < 8) return "Минимум 8 символов";
         return "";
   
       case "password_confirm":
@@ -20,7 +20,7 @@ export function validateField(name, value, form = {}) {
         return "";
   
       case "bio":
-        if (value.length > 300) return "Максимум 300 символов";
+        if (value.length > 500) return "Максимум 500 символов";
         return "";
   
       default:

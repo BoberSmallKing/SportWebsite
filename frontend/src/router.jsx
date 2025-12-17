@@ -1,10 +1,11 @@
-// src/router.jsx
 import { createBrowserRouter } from "react-router-dom";
+import { PrivateRoute } from "./components/PrivateRoute"; 
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
-import SportsmenTest from "./pages/SportsmenTest";
+import Logout from "./pages/logout";
 
 const router = createBrowserRouter([
   {
@@ -21,11 +22,15 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    )
   },
   {
-    path: "/sportsmen-test",
-    element: <SportsmenTest />
+    path: "/logout",
+    element: <Logout />
   }
 ]);
 

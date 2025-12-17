@@ -33,7 +33,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     
     
 class UserLoginSerializer(serializers.Serializer):
-    number = serializers.DecimalField(max_digits=11, decimal_places=0)
+    number = serializers.CharField(max_length=12)
     password = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
