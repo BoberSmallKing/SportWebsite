@@ -1,13 +1,12 @@
-import { useState } from "react";
-import { register } from "../services/authService";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { register, checkRegistrationStatus } from "../services/authService";
+import { useNavigate, Link } from "react-router-dom";
 
 import AuthLayout from "../components/layout/AuthLayout";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import FormError from "../components/ui/FormError";
 import { validateField } from "../utils/validators";
-import api from "../api/api";
 
 function Register() {
   const [form, setForm] = useState({
@@ -18,10 +17,22 @@ function Register() {
     password_confirm: ""
   });
 
-  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [serverError, setServerError] = useState("");
+  const navigate = useNavigate();
+
+  // Проверка, есть ли pending-заявка, чтобы редиректить на /pending
+  useEffect(() => {
+    const pendingNumber = localStorage.getItem("pending_number");
+    if (pendingNumber) {
+      checkRegistrationStatus(pendingNumber).then(data => {
+        if (data.exists && !data.is_approved) {
+          navigate("/pending");
+        }
+      });
+    }
+  }, [navigate]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -61,19 +72,22 @@ function Register() {
     if (!validateForm()) return;
 
     try {
-      const data = await register({
+      await register({
         full_name: form.full_name,
         bio: form.bio,
         number: form.number,
         password: form.password,
         password_confirm: form.password_confirm
       });
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${data.access}`;
-    navigate("/")
-    } catch {
-      setServerError("Ошибка при отправке заявки");
+
+      
+      navigate("/pending");
+    } catch (err) {
+      const msg =
+        err.response?.data?.number?.[0] ||
+        err.response?.data?.detail ||
+        "Ошибка при отправке заявки";
+      setServerError(msg);
     }
   }
 
@@ -129,10 +143,15 @@ function Register() {
           error={touched.password_confirm && errors.password_confirm}
         />
 
-        <FormError message={serverError} />
+        <div className="form-error"><FormError  message={serverError} /></div>
 
         <Button type="submit">Отправить заявку</Button>
-        <p className="auth-under-text">У Вас есть аккаунт? <a style={{color: "red"}} href="/login">Войти</a></p>
+        <p className="auth-under-text">
+          У Вас есть аккаунт?{" "}
+          <Link style={{ color: "red" }} to="/login">
+            Войти
+          </Link>
+        </p>
       </form>
     </AuthLayout>
   );

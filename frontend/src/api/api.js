@@ -44,6 +44,11 @@ api.interceptors.response.use(
     }
 
     const originalRequest = error.config;
+    const errorData = error.response.data;
+
+    if (error.response.status === 400 && errorData.code === 'account_pending') {
+      return Promise.reject(error); 
+    }
 
     if (
       error.response.status === 401 &&

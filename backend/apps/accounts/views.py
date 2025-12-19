@@ -3,13 +3,15 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import login
+from rest_framework.views import APIView
+
 
 from .models import User
 from .serializers import *
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
-    serializer_class= UserRegistrationSerializer
+    serializer_class = UserRegistrationSerializer
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
@@ -17,17 +19,30 @@ class RegisterView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         
-        refresh = RefreshToken.for_user(user)
-        
-        response = Response({
+        return Response({
             'user': UserRegistrationSerializer(user).data,
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'message': 'User registrered succesfully'
+            'message': 'Заявка на регистрацию отправлена. Ожидайте одобрения администратором.'
         }, status=status.HTTP_201_CREATED)
         
-        
-        return response
+
+class RegistrationStatusView(APIView):
+    permission_classes = []  # Доступно без токена
+
+    def post(self, request):
+        number = request.data.get("number")
+        if not number:
+            return Response({"detail": "Номер телефона обязателен"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(number=number)
+            return Response({
+                "exists": True,
+                "is_approved": user.is_approved,
+                "is_active": user.is_active
+            }, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({"exists": False}, status=status.HTTP_200_OK)
+
         
         
 

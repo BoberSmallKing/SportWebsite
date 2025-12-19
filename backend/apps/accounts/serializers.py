@@ -1,9 +1,19 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
+from rest_framework.validators import UniqueValidator
 from .models import User
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+    number = serializers.CharField(
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message="Заявка с этим номером уже подана"
+            )
+        ]
+    )
+
     password = serializers.CharField(
         write_only=True,
         validators=[validate_password]
@@ -16,20 +26,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs["password"] != attrs["password_confirm"]:
-            raise serializers.ValidationError(
-                {"password": "Passwords do not match"}
-            )
+            raise serializers.ValidationError({
+                "password": "Пароли не совпадают"
+            })
         return attrs
-
-    def create(self, validated_data):
-        validated_data.pop("password_confirm")
-        password = validated_data.pop("password")
-
-        user = User(**validated_data)
-        user.set_password(password)
-        user.save()
-
-        return user
     
     
 class UserLoginSerializer(serializers.Serializer):
@@ -45,7 +45,12 @@ class UserLoginSerializer(serializers.Serializer):
             number=number,
             password=password
         )
-
+        
+        if not user.is_approved:
+            raise serializers.ValidationError({
+        "status": "pending_approval",
+        "detail": "Ваша заявка на регистрацию еще находится на рассмотрении."
+    })
         if not user:
             raise serializers.ValidationError("Неверный номер или пароль")
 

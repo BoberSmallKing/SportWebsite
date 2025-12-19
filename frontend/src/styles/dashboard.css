@@ -1,0 +1,129 @@
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  /* SIDEBAR */
+  .sidebar {
+    width: 260px;
+    background: var(--white);
+    border-right: 1px solid #eee;
+    padding: 30px 20px;
+  }
+  
+  .sidebar-title {
+    font-weight: 700;
+    margin-bottom: 30px;
+    font-size: 18px;
+  }
+  
+  .sidebar-link {
+    display: block;
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: var(--black);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  
+  .sidebar-link:hover {
+    background: var(--bg);
+    color: var(--red);
+  }
+  
+  .sidebar-link.active {
+    background: var(--bg);
+    color: var(--red);
+  }
+  
+  
+  /* CONTENT */
+  .dashboard-content {
+    flex: 1;
+    padding: 40px;
+  }
+  
+  /* HEADER */
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  
+  /* TEAM */
+  .search {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    width: 260px;
+    margin-bottom: 15px;
+  }
+  
+  .stats {
+    margin-bottom: 20px;
+    color: var(--gray);
+  }
+  
+  /* CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  
+  .athlete-card {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #eee;
+    transition: all 0.2s ease;
+  }
+  
+  .athlete-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  }
+  
+  .rating {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .rating.red { background: #ffebee; color: #c62828; }
+  .rating.gold { background: #fff8e1; color: #ff8f00; }
+  .rating.green { background: #e8f5e9; color: #2e7d32; }
+  .rating.diamond { background: #e3f2fd; color: #1565c0; }
+  
+  /* FIGHTS */
+  .fight-form,
+  .fight-result {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid #eee;
+    max-width: 420px;
+    margin-bottom: 30px;
+  }
+  
+  .fight-form select,
+  .fight-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  

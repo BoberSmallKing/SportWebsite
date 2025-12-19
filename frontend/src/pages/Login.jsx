@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-import { login } from "../services/authService";
+import { useAuth } from "../context/AuthContext";
 import api from "../api/api";
 
 import AuthLayout from "../components/layout/AuthLayout";
@@ -15,7 +15,8 @@ function Login() {
     number: "",
     password: ""
   }); 
-
+  
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
@@ -91,10 +92,10 @@ function Login() {
           error={touched.password && errors.password}
         />
 
-        <FormError message={serverError} />
+        <div className="form-error"><FormError message={serverError} /></div>
 
         <Button type="submit">Войти</Button>
-        <p className="auth-under-text">Вы подали заявку? <a style={{color: "red"}} href="/register">Заявка</a></p>
+        <p className="auth-under-text">Вы подали заявку? <Link style={{color: "red"}} to="/register">Заявка</Link></p>
       </form>
     </AuthLayout>
   );

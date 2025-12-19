@@ -10,6 +10,7 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
+    is_approved = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'number'
     REQUIRED_FIELDS = []
