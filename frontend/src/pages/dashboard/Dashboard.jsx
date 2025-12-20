@@ -1,6 +1,6 @@
-import Sidebar from "../components/ui/dashboard/Sidebar";
+import Sidebar from "../../components/ui/dashboard/Sidebar";
 import { Outlet } from "react-router-dom";
-import "../styles/dashboard.css"
+import "../../styles/dashboard.css"
 
 function Dashboard() {
   return (

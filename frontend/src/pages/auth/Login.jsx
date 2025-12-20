@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { useAuth } from "../context/AuthContext";
-import api from "../api/api";
+import { useAuth } from "../../context/AuthContext";
+import api from "../../api/api";
 
-import AuthLayout from "../components/layout/AuthLayout";
-import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
-import FormError from "../components/ui/FormError";
-import { validateField } from "../utils/validators";
+import "../../styles/auth.css"
+import AuthLayout from "../../components/layout/AuthLayout";
+import Input from "../../components/ui/Input";
+import Button from "../../components/ui/Button";
+import FormError from "../../components/ui/FormError";
+import { validateField } from "../../utils/validators";
 
 function Login() {
   const [form, setForm] = useState({

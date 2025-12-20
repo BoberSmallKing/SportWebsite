@@ -59,7 +59,7 @@ export default function Home() {
 
       {/* FEATURES */}
       <section className="features" id="features">
-        <h2>Почему тренеры выбирают SportRank</h2>
+        <h2 className="feature-title">Почему тренеры выбирают SportRank</h2>
 
         <div className="feature-grid">
           <div className="feature-card">

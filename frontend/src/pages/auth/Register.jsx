@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { register, checkRegistrationStatus } from "../services/authService";
+import { register, checkRegistrationStatus } from "../../services/authService";
 import { useNavigate, Link } from "react-router-dom";
 
-import AuthLayout from "../components/layout/AuthLayout";
-import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
-import FormError from "../components/ui/FormError";
-import { validateField } from "../utils/validators";
+
+import "../../styles/auth.css"
+import AuthLayout from "../../components/layout/AuthLayout";
+import Input from "../../components/ui/Input";
+import Button from "../../components/ui/Button";
+import FormError from "../../components/ui/FormError";
+import { validateField } from "../../utils/validators";
 
 function Register() {
   const [form, setForm] = useState({
@@ -22,7 +24,6 @@ function Register() {
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
 
-  // Проверка, есть ли pending-заявка, чтобы редиректить на /pending
   useEffect(() => {
     const pendingNumber = localStorage.getItem("pending_number");
     if (pendingNumber) {

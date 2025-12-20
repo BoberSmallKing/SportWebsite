@@ -1,0 +1,112 @@
+/* ===== GLOBAL RESET ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--black);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===== CSS VARIABLES ===== */
+:root {
+  --red: #e53935;
+  --black: #111111;
+  --white: #ffffff;
+  --gray: #666666;
+
+  --bg: #f6f6f6;
+  --bg-card: #ffffff;
+
+  --border-light: #eeeeee;
+  --border-muted: rgba(0, 0, 0, 0.1);
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+
+  --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-md: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* ===== COMMON UI ===== */
+.btn-primary {
+  background: var(--red);
+  color: var(--white);
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-gradient {
+  width: 100%;
+  height: 46px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: var(--red);
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(229, 57, 53, 0.4);
+}
+
+.btn-outline {
+  border: 2px solid var(--red);
+  color: var(--red);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border-light);
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--red);
+  background: var(--white);
+}
+
+.form-error {
+  color: var(--red);
+  font-size: 12px;
+  margin-bottom: 10px;
+  display: block;
+}

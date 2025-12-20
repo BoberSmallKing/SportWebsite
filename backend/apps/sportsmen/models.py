@@ -5,9 +5,8 @@ from django.conf import settings
 class Sportsmen(models.Model):
     coach = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='sportsmen')
     full_name = models.CharField(max_length=200)
-    photo = models.ImageField(upload_to='sportsmen_photos/',blank=True,null=True)
-    description = models.TextField(max_length=1000)
-    number = models.DecimalField(max_digits=11, decimal_places=0, unique=True, blank=True,null=True)
+    photo = models.ImageField(upload_to='sportsmen_photos/', default='sportsmen_photos/default.jpg')
+    description = models.TextField()
     achievement = models.TextField(
         help_text="Каждое достижение с новой строки"
     )

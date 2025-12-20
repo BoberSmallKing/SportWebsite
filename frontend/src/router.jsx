@@ -1,14 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
 import { PrivateRoute } from "./components/PrivateRoute";
 
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import Logout from "./pages/Logout";
-import HelpBid from "./pages/HelpBid";
-import TeamPage from "./pages/TeamPage";
-import FightsPage from "./pages/FightsPage";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Logout from "./pages/auth/Logout";
+import HelpBid from "./pages/auth/HelpBid";
+import TeamPage from "./pages/dashboard/TeamPage";
+import FightsPage from "./pages/dashboard/FightsPage";
+import CreateAthletePage from "./pages/dashboard/CreateAthletePage";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,11 @@ const router = createBrowserRouter([
       {
         path: "fights",
         element: <FightsPage /> 
-      }
+      },
+      {
+        path: "create-athlete",
+        element: <CreateAthletePage />   
+      },
     ]
   },
 
