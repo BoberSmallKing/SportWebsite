@@ -15,7 +15,7 @@ function CreateAthletePage() {
 
   const [formData, setFormData] = useState({
     full_name: "",
-    rating: "green",
+    division: "red",
     description: "",
     photo: null
   });
@@ -64,7 +64,7 @@ function CreateAthletePage() {
 
     const data = new FormData();
     data.append("full_name", formData.full_name);
-    data.append("rating", formData.rating);
+    data.append("division", formData.division);
     data.append("description", formData.description);
     data.append("achievement", achievementString); 
     
@@ -95,7 +95,6 @@ function CreateAthletePage() {
       <form onSubmit={handleSubmit} className="form-container-dashboard">
         <FormError message={error} />
 
-        {/* --- СЕКЦИЯ 1: ФОТО И ИНФО --- */}
         <div className="form-section">
           <h3 className="form-section-title">Основная информация</h3>
           <div className="form-grid-dashboard">
@@ -111,9 +110,9 @@ function CreateAthletePage() {
             <div className="form-group">
               <label className="form-label">Ранг</label>
               <select 
-                name="rating" 
+                name="division" 
                 className="form-input form-select"
-                value={formData.rating}
+                value={formData.division}
                 onChange={handleChange}
               >
                 <option value="gold">Золотой</option>
@@ -152,16 +151,13 @@ function CreateAthletePage() {
           <div className="dynamic-list">
             {achievementsList.map((ach, index) => (
               <div key={index} className="dynamic-item">
-                {/* Передаем value и onChange вручную, так как это массив */}
                 <Input 
                   label={index === 0 ? "Достижение" : "⠀"}
                   placeholder={`Например: Чемпион области 202${index + 1}`}
                   value={ach}
                   onChange={(e) => handleAchievementChange(index, e.target.value)}
                 />
-                
-                {/* Кнопка удалить */}
-                <button 
+                                <button 
                   type="button" 
                   className="btn-remove"
                   onClick={() => removeAchievementField(index)}

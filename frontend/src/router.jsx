@@ -10,6 +10,7 @@ import HelpBid from "./pages/auth/HelpBid";
 import TeamPage from "./pages/dashboard/TeamPage";
 import FightsPage from "./pages/dashboard/FightsPage";
 import CreateAthletePage from "./pages/dashboard/CreateAthletePage";
+import AthleteDetailPage from "./pages/dashboard/AthleteDetailPage"
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
     element: <Register />
   },
 
-  /* DASHBOARD LAYOUT */
+
   {
     path: "/dashboard",
     element: (
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: "create-athlete",
         element: <CreateAthletePage />   
+      },
+      {
+        path: "athlete/:id", 
+        element: <AthleteDetailPage />
       },
     ]
   },

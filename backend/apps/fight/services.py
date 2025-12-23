@@ -1,21 +1,25 @@
-RATING_ORDER = ['diamond', 'gold']
+import math
+from django.db import transaction
+
+K = 32
 
 
-def promote_rating(current):
-    if current not in RATING_ORDER:
-        return current
-
-    idx = RATING_ORDER.index(current)
-    if idx < len(RATING_ORDER) - 1:
-        return RATING_ORDER[idx + 1]
-    return current
+def expected_score(rating_a, rating_b):
+    return 1 / (1 + 10 ** ((rating_b - rating_a) / 400))
 
 
-def demote_rating(current):
-    if current not in RATING_ORDER:
-        return current
+def elo_change(player_rating, opponent_rating, result):
+    expected = expected_score(player_rating, opponent_rating)
+    return round(K * (result - expected))
 
-    idx = RATING_ORDER.index(current)
-    if idx > 0:
-        return RATING_ORDER[idx - 1]
-    return current
+
+@transaction.atomic
+def apply_fight_result(winner, loser):
+    winner_delta = elo_change(winner.rating, loser.rating, 1)
+    loser_delta = elo_change(loser.rating, winner.rating, 0)
+
+    winner.rating += winner_delta
+    loser.rating += loser_delta
+
+    winner.save()
+    loser.save()
