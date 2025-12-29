@@ -1,14 +1,27 @@
-/* ===== HEADER ===== */
+/* ===== LAYOUT CONTAINERS ===== */
+.header,
+.hero,
+.features,
+.advantages,
+.cta,
+.footer {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .header {
   position: sticky;
   top: 0;
-  z-index: 10;
-  background: var(--white);
-  padding: 20px 40px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding-top: 15px;
+  padding-bottom: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--border-light);
+  width: 100%;
 }
 
 .header-left {
@@ -17,36 +30,63 @@
 }
 
 .logo {
-  font-size: 28px;
+  font-size: clamp(20px, 4vw, 28px);
   color: var(--red);
 }
 
 .project-name {
-  font-size: 22px;
+  font-size: clamp(16px, 3vw, 22px);
   font-weight: 700;
   margin-left: 10px;
+  white-space: nowrap;
+}
+
+.header-nav {
+  display: flex;
+  gap: 20px;
 }
 
 .header-nav a {
-  margin-left: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 
-/* ===== HERO ===== */
+.header-nav a:hover {
+  color: var(--red);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  .header-nav {
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .header-nav a {
+    margin-left: 0;
+  }
+}
+
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
-  padding: 80px 40px;
+  padding-top: clamp(40px, 8vw, 80px);
+  padding-bottom: clamp(40px, 8vw, 80px);
   align-items: center;
-}
-
-.hero-actions a { 
-  margin-right: 15px; 
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .hero h1 {
-  font-size: 44px;
-  line-height: 1.2;
+  font-size: clamp(32px, 6vw, 54px); /* Адаптивный размер шрифта */
+  line-height: 1.1;
+  margin: 0;
 }
 
 .hero h1 span {
@@ -54,91 +94,159 @@
 }
 
 .hero p {
-  margin: 20px 0 30px;
-  font-size: 18px;
+  margin: 24px 0 32px;
+  font-size: clamp(16px, 2vw, 18px);
   color: var(--gray);
   max-width: 520px;
 }
 
+.hero-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.hero-image {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .hero-image img {
   width: 100%;
-  border-radius: var(--radius-lg);
+  max-width: 500px;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
   animation: float 4s ease-in-out infinite;
 }
 
 @keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@media (max-width: 992px) {
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero h1,
+  .hero p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-actions {
+    justify-content: center;
+  }
+  .hero-image {
+    order: -1; /* Картинка будет над текстом на мобилках */
+  }
 }
 
 /* ===== FEATURES ===== */
 .features {
-  padding: 60px 40px;
+  padding-top: 80px;
+  padding-bottom: 80px;
   background: var(--white);
 }
 
-.feature-title{
+.feature-title {
   text-align: center;
-  padding-bottom: 15px;
+  margin-bottom: 50px;
+  font-size: clamp(24px, 4vw, 32px);
 }
 
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  /* Автоматическое создание колонок: минимум 280px */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .feature-card {
-  background: var(--bg);
-  padding: 25px;
-  border-radius: var(--radius-lg);
+  background: var(--bg-light);
+  padding: 30px;
+  border-radius: var(--radius-md);
   transition: all 0.3s ease;
+  border: 1px solid var(--border-light);
 }
 
 .feature-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
 
-/* ADVANTAGES */ 
-.advantages { 
-  padding: 60px 40px; 
-} 
-
-.advantages h2 { 
-  text-align: center; 
-  margin-bottom: 30px; 
-} 
-
-.adv-list { 
-  max-width: 600px; 
-  margin: 0 auto; 
-  list-style: none; 
-  padding: 0; 
-} 
-
-.adv-list li { 
-  font-size: 18px; 
-  margin-bottom: 15px; 
+/* ===== ADVANTAGES ===== */
+.advantages {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  max-width: 800px;
+  margin: 0 auto;
 }
-/* ===== CTA ===== */
+
+.advantages h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: clamp(24px, 4vw, 32px);
+}
+
+.adv-list {
+  list-style: none;
+  padding: 0;
+}
+
+.adv-list li {
+  font-size: clamp(16px, 2vw, 18px);
+  margin-bottom: 20px;
+  padding-left: 35px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Красивый маркер для списка в стиле файтинга */
+.adv-list li::before {
+  content: "◈";
+  position: absolute;
+  left: 0;
+  color: var(--red);
+  font-weight: bold;
+}
+
+/* ===== CTA (Call to Action) ===== */
 .cta {
   text-align: center;
-  padding: 80px 40px;
+  padding: clamp(60px, 10vw, 100px) 20px;
   background: var(--black);
   color: var(--white);
+  border-radius: 0; /* На мобильных обычно во весь экран */
+}
+
+.cta h2 {
+  font-size: clamp(26px, 5vw, 40px);
+  margin-bottom: 10px;
 }
 
 .cta p {
-  color: #ccc;
-  margin: 15px 0 30px;
+  color: #aaa;
+  margin-bottom: 40px;
+  font-size: 18px;
 }
 
 /* ===== FOOTER ===== */
 .footer {
-  padding: 30px;
+  padding: 40px 20px;
   background: var(--white);
   text-align: center;
   border-top: 1px solid var(--border-light);
+  font-size: 14px;
+  color: var(--gray);
 }

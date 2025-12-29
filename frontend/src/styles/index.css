@@ -43,6 +43,13 @@ body {
   background: var(--bg-light);
   color: var(--black);
   line-height: 1.5;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 a {
@@ -50,7 +57,6 @@ a {
   color: inherit;
 }
 
-/* ===== MODERN UI COMPONENTS ===== */
 .btn-primary {
   background: var(--red);
   color: var(--white);
@@ -81,7 +87,6 @@ a {
   border-color: var(--red);
 }
 
-/* ===== UTILS ===== */
 .retro-loader {
   font-family: var(--retro-font);
   color: var(--retro-gold);
@@ -93,5 +98,15 @@ a {
 @keyframes blink {
   50% {
     opacity: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --retro-border-thick: 2px;
+  }
+  .retro-loader {
+    font-size: 12px;
+    padding: 20px;
   }
 }

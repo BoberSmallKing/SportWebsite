@@ -10,9 +10,9 @@ function TeamPage() {
   const [athletes, setAthletes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedAthlete, setSelectedAthlete] = useState(null);
-
   const [selectionMode, setSelectionMode] = useState(false);
   const [fightPair, setFightPair] = useState([]);
+  const [showMobileDetails, setShowMobileDetails] = useState(false);
 
   useEffect(() => {
     SportsmenAPI.list()
@@ -25,13 +25,22 @@ function TeamPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  // Блокировка скролла при открытом поп-апе на мобилках
+  useEffect(() => {
+    if (showMobileDetails && window.innerWidth <= 1024) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [showMobileDetails]);
+
   const handleSlotClick = (athlete) => {
     if (!selectionMode) {
       setSelectedAthlete(athlete);
+      setShowMobileDetails(true);
       return;
     }
 
-    // Логика выбора пары
     if (fightPair.includes(athlete.id)) {
       setFightPair(fightPair.filter((id) => id !== athlete.id));
     } else {
@@ -53,6 +62,14 @@ function TeamPage() {
 
   return (
     <div className={`roster-layout ${selectionMode ? "selection-active" : ""}`}>
+      {/* Затемнение фона при открытых деталях на мобилке */}
+      {showMobileDetails && (
+        <div
+          className="mobile-overlay"
+          onClick={() => setShowMobileDetails(false)}
+        ></div>
+      )}
+
       <div className="roster-grid-section">
         <div className="roster-header-actions">
           <button
@@ -60,10 +77,10 @@ function TeamPage() {
             onClick={() => navigate("/dashboard")}
             type="button"
           >
-            ← НАЗАД
+            ←
           </button>
           <h2 className="select-title">
-            {selectionMode ? "ВЫБЕРЕТЕ ДВУХ БОЙЦОВ" : "ВЫБЕРИТЕ ВЫШЕГО БОЙЦА"}
+            {selectionMode ? "ВЫБОР ПАРЫ" : "ВЫБЕРИ БОЙЦА"}
           </h2>
           <div className="mode-controls">
             <button
@@ -73,7 +90,7 @@ function TeamPage() {
                 setFightPair([]);
               }}
             >
-              {selectionMode ? "[ ОТМЕНЫ ВЫБОРА ]" : "[ ОРГАНИЗОВАТЬ БОЙ ]"}
+              {selectionMode ? "[X]" : "[БОЙ]"}
             </button>
           </div>
         </div>
@@ -87,13 +104,17 @@ function TeamPage() {
                 ${fightPair.includes(a.id) ? "picked" : ""}
                 ${selectionMode ? "in-selection" : ""}
               `}
-              onMouseEnter={() => !selectionMode && setSelectedAthlete(a)}
+              onMouseEnter={() =>
+                !selectionMode &&
+                window.innerWidth > 1024 &&
+                setSelectedAthlete(a)
+              }
               onClick={() => handleSlotClick(a)}
             >
               <AthleteCard athlete={a} />
               {fightPair.includes(a.id) && (
                 <div className="pick-badge">
-                  {fightPair.indexOf(a.id) === 0 ? "СНИЙ" : "КРАСНЫ"}
+                  {fightPair.indexOf(a.id) === 0 ? "BLUE" : "RED"}
                 </div>
               )}
             </div>
@@ -105,7 +126,7 @@ function TeamPage() {
               className="roster-slot add-slot"
             >
               <div className="add-icon">+</div>
-              <div className="add-text">НОВЫЙ_БОЕЦ</div>
+              <div className="add-text">НОВЫЙ</div>
             </Link>
           )}
         </div>
@@ -119,17 +140,26 @@ function TeamPage() {
               disabled={fightPair.length !== 2}
               onClick={handleStartFight}
             >
-              ПЕРЕЙТИ К ДЕТАЛЯМ БОЯ
+              В БОЙ
             </RetroButton>
           </div>
         )}
       </div>
 
-      {/* ПРАВАЯ ЧАСТЬ: ИНФО */}
-      <aside className="athlete-detail-panel">
-        <div className="scanline"></div>
+      <aside
+        className={`athlete-detail-panel ${
+          showMobileDetails ? "mobile-active" : ""
+        }`}
+      >
         {selectedAthlete && (
           <div className="retro-detail-content">
+            <button
+              className="close-mobile-details"
+              onClick={() => setShowMobileDetails(false)}
+            >
+              [ ЗАКРЫТЬ ]
+            </button>
+
             <div className="detail-header">
               <h1 className="detail-name">{selectedAthlete.full_name}</h1>
               <div className={`detail-rank-bar ${selectedAthlete.division}`}>
@@ -162,10 +192,10 @@ function TeamPage() {
 
             <div className="detail-actions">
               <button
-                className="retro-btn secondary"
+                className="retro-btn"
                 onClick={() => window.open("https://telegra.ph/", "_blank")}
               >
-                ПОСМОТРЕТЬ КАРТОЧКУ
+                ПРОФИЛЬ
               </button>
             </div>
           </div>

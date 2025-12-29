@@ -1,27 +1,150 @@
+/* ===== BASE & WRAPPER ===== */
+body {
+  background: var(--bg-light);
+  color: var(--black);
+  font-family: Inter, system-ui, sans-serif;
+  margin: 0;
+}
+
 .auth-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Увеличиваем паддинг для мобилок, чтобы карточка не липла к краям */
   padding: 20px;
+  background: var(--bg-light);
 }
 
+/* ===== CARD ===== */
 .card {
-  width: 400px;
-  padding: 26px;
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-muted);
-  box-shadow: var(--shadow-sm);
+  width: 100%;
+  /* Ограничиваем максимальную ширину, но разрешаем сужаться */
+  max-width: 420px;
+  padding: clamp(20px, 5vw, 32px); /* Адаптивные внутренние отступы */
+  background: var(--white);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .card:hover {
+    transform: translateY(-5px);
+  }
 }
 
 .auth-title {
   text-align: center;
-  font-size: 32px;
+  /* Текст станет чуть меньше на маленьких экранах */
+  font-size: clamp(24px, 6vw, 32px);
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: var(--black);
+  letter-spacing: -0.5px;
+}
+
+/* ===== FORM ELEMENTS ===== */
+.form-group {
   margin-bottom: 20px;
+  width: 100%;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--gray);
+  padding-left: 4px;
+}
+
+/* Улучшаем input для мобильного ввода */
+.form-input,
+.form-textarea {
+  width: 100%;
+  /* Высота минимум 48px для удобства нажатия пальцем */
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 2px solid var(--border-light);
+  font-size: 16px; /* Предотвращает автоматический зум на iPhone при фокусе */
+  background: var(--white);
+  transition: all 0.2s ease;
+}
+
+.form-textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.1);
+  background: #fff;
+}
+
+/* ===== BUTTON ===== */
+.btn-gradient {
+  width: 100%;
+  min-height: 52px; /* Увеличили для мобильной эргономики */
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 10px;
+}
+
+.btn-gradient:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 8px 24px rgba(229, 57, 53, 0.3);
+}
+
+.btn-gradient:active {
+  transform: scale(0.98);
+}
+
+/* ===== ERRORS & HELPER TEXT ===== */
+.form-error {
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .auth-under-text {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--gray);
+}
+
+.auth-under-text a {
+  color: var(--red);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-under-text a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 360px) {
+  .card {
+    padding: 16px;
+  }
+  .auth-title {
+    font-size: 22px;
+  }
 }
