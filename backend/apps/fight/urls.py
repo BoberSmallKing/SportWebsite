@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
-router.register("", views.FightViewSet, basename="sportsmen")
+router.register("fights", views.FightViewSet, basename="fights")
+router.register("sections", views.SportSectionViewSet, basename="sections")
 urlpatterns = router.urls
 
 

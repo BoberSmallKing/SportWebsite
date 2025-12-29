@@ -1,4 +1,36 @@
-/* ===== GLOBAL RESET ===== */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+/* ===== DESIGN SYSTEM ===== */
+:root {
+  /* Common UI Colors */
+  --red: #e53935;
+  --black: #111111;
+  --white: #ffffff;
+  --gray: #666666;
+  --bg-light: #f6f6f6;
+  --border-light: #eeeeee;
+
+  /* RETRO SYSTEM COLORS (Mortal Kombat Style) */
+  --retro-gold: #f7d51d;
+  --retro-gold-dark: #8a7300;
+  --retro-red: #ff0000;
+  --retro-red-dark: #1a0000;
+  --retro-blue-dark: #000b1e;
+  --retro-stone: #3d2b1f;
+  --retro-stone-light: #555555;
+  --retro-bg: #000000;
+  --retro-green: #00ff00;
+  --retro-cyan: #00ffff;
+
+  /* Dimensions & Effects */
+  --retro-border-thick: 4px;
+  --retro-font: "Press Start 2P", cursive;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== RESET & BASE ===== */
 *,
 *::before,
 *::after {
@@ -8,8 +40,9 @@
 body {
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
-  background: var(--bg);
+  background: var(--bg-light);
   color: var(--black);
+  line-height: 1.5;
 }
 
 a {
@@ -17,73 +50,21 @@ a {
   color: inherit;
 }
 
-/* ===== CSS VARIABLES ===== */
-:root {
-  --red: #e53935;
-  --black: #111111;
-  --white: #ffffff;
-  --gray: #666666;
-  --green: #2e7d32;
-  --blue: #1e88e5;
-
-  --bg: #f6f6f6;
-  --bg-card: #ffffff;
-
-  --border-light: #eeeeee;
-  --border-muted: rgba(0, 0, 0, 0.1);
-
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
-
-  --shadow-sm: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-md: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-/* ===== COMMON UI ===== */
+/* ===== MODERN UI COMPONENTS ===== */
 .btn-primary {
   background: var(--red);
   color: var(--white);
   padding: 10px 18px;
   border-radius: var(--radius-sm);
   font-weight: 600;
-  transition: all 0.2s ease;
   cursor: pointer;
-}
-
-.btn-gradient {
-  width: 100%;
-  height: 46px;
-  border-radius: var(--radius-md);
   border: none;
-  background: var(--red);
-  color: white;
-  font-size: 15px;
-  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(229, 57, 53, 0.4);
-}
-
-.btn-outline {
-  border: 2px solid var(--red);
-  color: var(--red);
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-label {
-  font-size: 13px;
-  color: var(--gray);
-  margin-bottom: 6px;
-  display: block;
 }
 
 .form-input {
@@ -92,23 +73,25 @@ a {
   border-radius: var(--radius-sm);
   border: 2px solid var(--border-light);
   font-size: 16px;
-  transition: all 0.2s;
-}
-
-.form-textarea {
-  min-height: 120px;
-  resize: vertical;
+  transition: border-color 0.2s;
 }
 
 .form-input:focus {
   outline: none;
   border-color: var(--red);
-  background: var(--white);
 }
 
-.form-error {
-  color: var(--red);
-  font-size: 12px;
-  margin-bottom: 10px;
-  display: block;
+/* ===== UTILS ===== */
+.retro-loader {
+  font-family: var(--retro-font);
+  color: var(--retro-gold);
+  text-align: center;
+  padding: 50px;
+  animation: blink 0.8s infinite step-start;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }

@@ -1,0 +1,437 @@
+.roster-container {
+  background: var(--retro-blue-dark);
+  padding: 40px;
+  min-height: 100vh;
+  font-family: "Press Start 2P", cursive;
+  color: var(--white);
+  border: 10px solid var(--retro-stone);
+  outline: 4px solid var(--retro-gold);
+}
+
+.roster-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.select-title {
+  color: var(--retro-gold);
+  font-size: 24px;
+  text-shadow: 4px 4px var(--retro-bg);
+  margin-bottom: 20px;
+  animation: blink 0.8s infinite step-start;
+}
+
+.current-fighter-name {
+  height: 40px;
+  font-size: 32px;
+  color: var(--retro-red);
+  text-shadow: 2px 2px var(--white);
+}
+
+.roster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.roster-slot {
+  aspect-ratio: 1 / 1.2;
+  border: 4px solid #555;
+  background: #222;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.1s;
+  cursor: pointer;
+}
+
+.roster-slot:hover {
+  transform: scale(1.1);
+  border-color: var(--white);
+  box-shadow: 0 0 20px var(--white);
+  z-index: 10;
+}
+
+.roster-slot .athlete-card {
+  height: 100%;
+  border: none;
+  background: transparent;
+}
+
+.roster-slot .athlete-photo-wrapper {
+  height: 100%;
+}
+
+.roster-slot .athlete-info,
+.roster-slot .athlete-description,
+.roster-slot .rating {
+  display: none; /* Скрываем детали в ростере */
+}
+
+.add-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: 4px dashed #444;
+}
+
+.add-icon {
+  font-size: 40px;
+  color: #444;
+}
+
+.add-slot:hover .add-icon {
+  color: var(--white);
+}
+
+.roster-footer-decor {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  color: var(--retro-gold);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.roster-layout {
+  display: flex;
+  background: var(--retro-bg);
+  min-height: 85vh;
+  font-family: "Press Start 2P", cursive;
+  border: 4px solid var(--retro-stone);
+  box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.2);
+}
+
+/* Левая часть */
+.roster-grid-section {
+  flex: 1;
+  padding: 20px;
+  border-right: 4px solid var(--retro-stone);
+}
+
+/* Правая панель информации */
+.athlete-detail-panel {
+  width: 350px;
+  background: linear-gradient(
+    180deg,
+    var(--retro-red-dark) 0%,
+    var(--retro-bg) 100%
+  );
+  padding: 20px;
+  color: var(--white);
+  overflow-y: auto;
+}
+
+.detail-name {
+  color: var(--retro-red);
+  font-size: 18px;
+  text-shadow: 2px 2px var(--retro-bg);
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--retro-red);
+  padding-bottom: 10px;
+}
+
+.detail-rank-bar {
+  font-size: 10px;
+  padding: 4px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.detail-rank-bar.gold {
+  background: var(--retro-gold);
+  color: var(--retro-bg);
+}
+.detail-rank-bar.red {
+  background: var(--retro-red);
+  color: var(--white);
+}
+.detail-rank-bar.green {
+  background: var(--retro-green);
+  color: var(--retro-bg);
+}
+.detail-rank-bar.diamond {
+  background: var(--retro-cyan);
+  color: var(--retro-bg);
+}
+
+.pixel-stat-box {
+  background: #222;
+  border: 2px solid #444;
+  padding: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.stat-value {
+  color: var(--retro-green);
+}
+
+.detail-bio h3,
+.detail-achievements h3 {
+  font-size: 12px;
+  color: var(--retro-gold);
+  margin-bottom: 10px;
+}
+
+.detail-bio p {
+  font-size: 8px;
+  line-height: 1.6;
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+.pixel-list {
+  list-style: none;
+  padding: 0;
+  font-size: 8px;
+}
+
+.pixel-list li {
+  margin-bottom: 8px;
+  color: var(--white);
+}
+
+/* Стилизация активного слота в ростере */
+.roster-slot.active {
+  border-color: var(--white);
+  box-shadow: 0 0 15px var(--retro-gold);
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+.retro-btn {
+  width: 100%;
+  background: var(--retro-gold);
+  border: none;
+  font-family: "Press Start 2P", cursive;
+  font-size: 10px;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px var(--retro-gold-dark);
+}
+
+.retro-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--retro-gold-dark);
+}
+
+.athlete-card-retro {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: var(--retro-bg);
+  border: 2px solid #444;
+  transition: all 0.2s steps(4);
+}
+
+.athlete-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+}
+
+.photo-container {
+  position: relative;
+  flex-grow: 1;
+  overflow: hidden;
+  background: linear-gradient(180deg, #1a1a1a 0%, var(--retro-bg) 100%);
+}
+
+.athlete-pixel-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  image-rendering: pixelated;
+  filter: contrast(1.1) brightness(0.9);
+  transition: filter 0.2s;
+}
+
+/* При наведении фото становится ярче */
+.athlete-card-retro:hover .athlete-pixel-photo {
+  filter: contrast(1.2) brightness(1.2);
+}
+
+.name-plate {
+  background: var(--retro-stone);
+  color: var(--retro-gold);
+  font-family: "Press Start 2P", cursive;
+  font-size: 7px;
+  text-align: center;
+  padding: 5px 2px;
+  border-top: 2px solid var(--retro-gold);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.division-badge {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size: 8px;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--retro-bg);
+  border: 1px solid var(--white);
+  font-family: "Press Start 2P", cursive;
+}
+
+/* Цвета дивизионов в стиле стихий */
+.division-badge.gold {
+  color: var(--retro-gold);
+  border-color: var(--retro-gold);
+}
+.division-badge.green {
+  color: var(--retro-green);
+  border-color: var(--retro-green);
+}
+.division-badge.red {
+  color: var(--retro-red);
+  border-color: var(--retro-red);
+}
+.division-badge.diamond {
+  color: var(--retro-cyan);
+  border-color: var(--retro-cyan);
+}
+
+.rating-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+  font-family: "Press Start 2P", cursive;
+  font-size: 7px;
+  padding: 2px 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.athlete-card-retro:hover .rating-overlay {
+  opacity: 1;
+}
+
+.athlete-card-retro:hover {
+  border-color: var(--white);
+  box-shadow: inset 0 0 10px var(--white);
+}
+
+/* Шапка ростера с кнопками режима */
+.roster-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.mode-btn {
+  background: transparent;
+  border: 1px solid var(--retro-gold);
+  color: var(--retro-gold);
+  font-family: var(--retro-font);
+  font-size: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mode-btn:hover,
+.mode-btn.active {
+  background: var(--retro-gold);
+  color: var(--retro-bg);
+}
+
+/* Стили слотов при выборе */
+.roster-slot.in-selection {
+  cursor: crosshair;
+}
+
+.roster-slot.picked {
+  border-color: var(--white);
+  box-shadow: 0 0 15px var(--white);
+  transform: scale(1.05);
+}
+
+.roster-slot.picked::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(247, 213, 29, 0.2);
+  z-index: 5;
+}
+
+.pick-badge {
+  position: absolute;
+  bottom: 10px;
+  right: -5px;
+  background: var(--retro-bg);
+  color: var(--white);
+  padding: 4px 8px;
+  font-size: 8px;
+  z-index: 10;
+  border: 1px solid var(--white);
+  box-shadow: 3px 3px 0 #000;
+}
+
+.selection-footer {
+  position: sticky;
+  bottom: 0;
+  margin-top: 30px;
+  background: rgba(0, 0, 0, 0.9);
+  border-top: 2px solid var(--retro-gold);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideUp 0.3s ease-out;
+}
+
+.selection-counter {
+  font-size: 14px;
+  color: var(--white);
+}
+
+.selection-counter .count {
+  color: var(--retro-gold);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Дополнение для карточки "Добавить" */
+.add-slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed var(--retro-stone);
+  color: var(--retro-stone);
+}
+
+.add-text {
+  font-size: 6px;
+  margin-top: 10px;
+}

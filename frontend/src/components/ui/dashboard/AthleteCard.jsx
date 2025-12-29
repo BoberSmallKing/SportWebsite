@@ -1,40 +1,25 @@
-import { Link } from "react-router-dom";
-
-
 function AthleteCard({ athlete }) {
-  const MAX_LENGTH = 70;
-
-  const description =
-    athlete.description && athlete.description.length > MAX_LENGTH
-      ? athlete.description.slice(0, MAX_LENGTH) + "…"
-      : athlete.description;
-
   return (
-    <div className="athlete-card">
-      <Link to={`/dashboard/athlete/${athlete.id}`}>
-      <div className="athlete-photo-wrapper">
+    <div className="athlete-card-retro">
+      <div className="photo-container">
         <img
           src={athlete.photo || "/fighter-placeholder.jpg"}
           alt={athlete.full_name}
-          className="athlete-photo"
+          className="athlete-pixel-photo"
         />
 
-        <span className={`rating ${athlete.division}`}>
-          {athlete.division.toUpperCase()}
-        </span>
+        <div className={`division-badge ${athlete.division}`}>
+          {athlete.division[0].toUpperCase()}
+        </div>
+
+        <div className="rating-overlay">
+          <span>{athlete.rating}</span>
+        </div>
       </div>
 
-      <div className="athlete-info">
-        <h3 className="athlete-name">{athlete.full_name}</h3>
-        <p style={{fontWeight: 600}}>Рейтинг: {athlete.rating}</p>
-        {description && (
-          <p className="athlete-description">{description}</p>
-        )}
-      </div>
-      </Link>
+      <div className="name-plate">{athlete.full_name.split(" ")[0]} </div>
     </div>
   );
 }
 
 export default AthleteCard;
-

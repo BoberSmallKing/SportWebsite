@@ -4,19 +4,20 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../api/api";
 
-import "../../styles/auth.css"
+import "../../styles/auth.css";
 import AuthLayout from "../../components/layout/AuthLayout";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import FormError from "../../components/ui/FormError";
 import { validateField } from "../../utils/validators";
+import "../../styles/auth.css";
 
 function Login() {
   const [form, setForm] = useState({
     number: "",
-    password: ""
-  }); 
-  
+    password: "",
+  });
+
   const { login } = useAuth();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -26,18 +27,18 @@ function Login() {
   function handleChange(e) {
     const { name, value } = e.target;
 
-    setForm(prev => ({ ...prev, [name]: value }));
+    setForm((prev) => ({ ...prev, [name]: value }));
 
     const error = validateField(name, value, {
       ...form,
-      [name]: value
+      [name]: value,
     });
 
-    setErrors(prev => ({ ...prev, [name]: error }));
+    setErrors((prev) => ({ ...prev, [name]: error }));
   }
 
   function handleBlur(e) {
-    setTouched(prev => ({ ...prev, [e.target.name]: true }));
+    setTouched((prev) => ({ ...prev, [e.target.name]: true }));
   }
 
   function validateForm() {
@@ -49,7 +50,7 @@ function Login() {
     setErrors(newErrors);
     setTouched({ number: true, password: true });
 
-    return Object.values(newErrors).every(e => !e);
+    return Object.values(newErrors).every((e) => !e);
   }
 
   async function handleSubmit(e) {
@@ -59,18 +60,15 @@ function Login() {
     try {
       const data = await login({
         number: form.number,
-        password: form.password
+        password: form.password,
       });
-  
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${data.access}`;
-      navigate("/")
+
+      api.defaults.headers.common["Authorization"] = `Bearer ${data.access}`;
+      navigate("/");
     } catch {
       setServerError("Неверный номер телефона или пароль");
     }
   }
-  
 
   return (
     <AuthLayout title="Вход">
@@ -93,10 +91,17 @@ function Login() {
           error={touched.password && errors.password}
         />
 
-        <div className="form-error"><FormError message={serverError} /></div>
+        <div className="form-error">
+          <FormError message={serverError} />
+        </div>
 
         <Button type="submit">Войти</Button>
-        <p className="auth-under-text">Вы подали заявку? <Link style={{color: "red"}} to="/register">Заявка</Link></p>
+        <p className="auth-under-text">
+          Вы подали заявку?{" "}
+          <Link style={{ color: "red" }} to="/register">
+            Заявка
+          </Link>
+        </p>
       </form>
     </AuthLayout>
   );

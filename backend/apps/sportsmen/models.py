@@ -28,21 +28,20 @@ class Sportsmen(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def set_division_manual(self, division):
-        if division in RANKS:
-            self.division = division
-            self.rating = RANKS[division]["min"]
-            self.save()
-
-
     def update_rank_by_rating(self):
         for division, data in RANKS.items():
             if data["min"] <= self.rating <= data["max"]:
                 self.division = division
                 return
 
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+
+        # Если объект создаётся впервые и рейтинг не задан явно
+        if is_new and self.rating == 0:
+            self.rating = RANKS[self.division]["min"]
+
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.full_name
-    
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)

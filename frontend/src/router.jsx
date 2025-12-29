@@ -8,24 +8,24 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Logout from "./pages/auth/Logout";
 import HelpBid from "./pages/auth/HelpBid";
 import TeamPage from "./pages/dashboard/TeamPage";
-import FightsPage from "./pages/dashboard/FightsPage";
+import CreateFightsPage from "./pages/dashboard/CreateFightsPage";
+import FightPage from "./pages/dashboard/FightPage";
 import CreateAthletePage from "./pages/dashboard/CreateAthletePage";
-import AthleteDetailPage from "./pages/dashboard/AthleteDetailPage"
+import Menu from "./pages/dashboard/Menu";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />
+    element: <Home />,
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register />
+    element: <Register />,
   },
-
 
   {
     path: "/dashboard",
@@ -37,35 +37,39 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <TeamPage />   
+        element: <Menu />,
+      },
+      {
+        path: "menu",
+        element: <Menu />,
       },
       {
         path: "team",
-        element: <TeamPage />   
+        element: <TeamPage />,
       },
       {
         path: "fights",
-        element: <FightsPage /> 
+        element: <FightPage />,
+      },
+      {
+        path: "fights/create",
+        element: <CreateFightsPage />,
       },
       {
         path: "create-athlete",
-        element: <CreateAthletePage />   
+        element: <CreateAthletePage />,
       },
-      {
-        path: "athlete/:id", 
-        element: <AthleteDetailPage />
-      },
-    ]
+    ],
   },
 
   {
     path: "/logout",
-    element: <Logout />
+    element: <Logout />,
   },
   {
     path: "/pending",
-    element: <HelpBid />
-  }
+    element: <HelpBid />,
+  },
 ]);
 
 export default router;

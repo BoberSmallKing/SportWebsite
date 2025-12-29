@@ -1,185 +1,207 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SportsmenAPI } from "../../services/sportsmenService";
-import Input from "../../components/ui/Input";
-import Button from "../../components/ui/Button";
-import FormError from "../../components/ui/FormError";
+import RetroInput from "../../components/ui/dashboard/RetroInput";
+import RetroButton from "../../components/ui/dashboard/RetroButton";
+import "../../styles/dashboard/createAthlete.css";
 
 function CreateAthletePage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  
-
   const [achievementsList, setAchievementsList] = useState([""]);
-
   const [formData, setFormData] = useState({
     full_name: "",
     division: "red",
     description: "",
-    photo: null
+    photo: null,
+    previewUrl: null,
   });
 
-  // --- ЛОГИКА ДЛЯ СПИСКА ДОСТИЖЕНИЙ ---
-  
-  // Изменение конкретного поля достижения
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (files && files[0]) {
+      setFormData((prev) => ({
+        ...prev,
+        photo: files[0],
+        previewUrl: URL.createObjectURL(files[0]),
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
   const handleAchievementChange = (index, value) => {
     const newList = [...achievementsList];
     newList[index] = value;
     setAchievementsList(newList);
   };
 
-  const addAchievementField = () => {
-    setAchievementsList([...achievementsList, ""]);
-  };
-
-
-  const removeAchievementField = (index) => {
-    if (achievementsList.length === 1) {
-      handleAchievementChange(0, ""); 
-      return;
-    }
-    const newList = achievementsList.filter((_, i) => i !== index);
-    setAchievementsList(newList);
-  };
-
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: files ? files[0] : value
-    }));
+  const removeAchievement = (index) => {
+    setAchievementsList(achievementsList.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-
-    const validAchievements = achievementsList
-      .map(item => item.trim())
-      .filter(item => item !== "");
-
-    const achievementString = validAchievements.join("\n");
-
     const data = new FormData();
     data.append("full_name", formData.full_name);
     data.append("division", formData.division);
     data.append("description", formData.description);
-    data.append("achievement", achievementString); 
-    
-    if (formData.photo) {
-      data.append("photo", formData.photo);
-    }
+    data.append(
+      "achievement",
+      achievementsList.filter((a) => a.trim()).join("\n")
+    );
+    if (formData.photo) data.append("photo", formData.photo);
 
     try {
       await SportsmenAPI.create(data);
       navigate("/dashboard/team");
     } catch (err) {
-      setError("Ошибка сохранения. Проверьте данные.");
-      console.error(err);
+      console.error("ОШИБКА ДОСТУПА К БАЗЕ:", err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="dashboard-content">
-      <div className="page-header">
-        <h1>Новый спортсмен</h1>
-        <button onClick={() => navigate(-1)} className="btn-outline" style={{border:'none', cursor:'pointer'}}>
-          ← Назад
-        </button>
-      </div>
+    <div className="retro-create-layout">
+      <div className="creation-terminal">
+        <div className="terminal-header">
+          <div className="status-indicator">
+            <span className="blink-dot"></span>
+            <span className="status-text">СИСТЕМА АКТИВНА</span>
+          </div>
+          <h2 className="terminal-title">ЛИЧНОЕ_ДЕЛО_БОЙЦА</h2>
+        </div>
 
-      <form onSubmit={handleSubmit} className="form-container-dashboard">
-        <FormError message={error} />
-
-        <div className="form-section">
-          <h3 className="form-section-title">Основная информация</h3>
-          <div className="form-grid-dashboard">
-            <Input 
-              label="ФИО Спортсмена" 
+        <form onSubmit={handleSubmit} className="retro-form-scroll">
+          <div className="form-grid">
+            <RetroInput
+              label="ФИО СПОРТСМЕНА"
               name="full_name"
-              placeholder="Иванов Иван Иванович"
+              placeholder="ВВЕДИТЕ ИМЯ..."
               value={formData.full_name}
               onChange={handleChange}
               required
             />
-            
-            <div className="form-group">
-              <label className="form-label">Ранг</label>
-              <select 
-                name="division" 
-                className="form-input form-select"
-                value={formData.division}
+
+            <div className="retro-input-group">
+              <label className="retro-label">КАТЕГОРИЯ / РАНГ</label>
+              <select
+                name="division"
+                className="retro-select-field"
                 onChange={handleChange}
+                value={formData.division}
               >
-                <option value="gold">Золотой</option>
-                <option value="diamond">Алмазный</option>
-                <option value="green">Зеленый</option>
-                <option value="red">Красный</option>
+                <option value="gold">ЗОЛОТО (ЭЛИТА)</option>
+                <option value="diamond">АЛМАЗ (МАСТЕР)</option>
+                <option value="green">ЗЕЛЕНЫЙ (ПРЕТЕНДЕНТ)</option>
+                <option value="red">КРАСНЫЙ (НОВИЧОК)</option>
               </select>
             </div>
           </div>
 
-          <Input 
-            label="Фотография" 
-            name="photo"
-            type="file"
-            accept="image/*"
-            onChange={handleChange}
-            fileName={formData.photo ? formData.photo.name : null}
-          />
-        </div>
+          <div className="input-block">
+            <RetroInput
+              label="ЗАГРУЗИТЬ ФОТО КАРТОЧКИ"
+              name="photo"
+              type="file"
+              accept="image/*"
+              onChange={handleChange}
+            />
+          </div>
 
-        {/* --- СЕКЦИЯ 2: ОПИСАНИЕ --- */}
-        <div className="form-section">
-          <h3 className="form-section-title">Детали</h3>
-          <Input 
-            label="Описание" 
-            name="description"
+          <RetroInput
             textarea
-            placeholder="Расскажите о спортсмене ..."
+            label="БИОГРАФИЯ И ХАРАКТЕРИСТИКА"
+            name="description"
+            placeholder="ОПИШИТЕ СИЛЬНЫЕ СТОРОНЫ..."
             value={formData.description}
             onChange={handleChange}
           />
-        </div>
 
-        <div className="form-section">
-          <h3 className="form-section-title">Список достижений</h3>
-          <div className="dynamic-list">
+          <div className="achievements-box">
+            <label className="retro-label">ЖУРНАЛ ДОСТИЖЕНИЙ (ПОБЕДЫ)</label>
             {achievementsList.map((ach, index) => (
-              <div key={index} className="dynamic-item">
-                <Input 
-                  label={index === 0 ? "Достижение" : "⠀"}
-                  placeholder={`Например: Чемпион области 202${index + 1}`}
-                  value={ach}
-                  onChange={(e) => handleAchievementChange(index, e.target.value)}
-                />
-                                <button 
-                  type="button" 
-                  className="btn-remove"
-                  onClick={() => removeAchievementField(index)}
-                  title="Удалить строку"
+              <div key={index} className="log-entry-row">
+                <div style={{ flex: 1 }}>
+                  <RetroInput
+                    placeholder={`ЗАПИСЬ #${index + 1}`}
+                    value={ach}
+                    onChange={(e) =>
+                      handleAchievementChange(index, e.target.value)
+                    }
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="retro-delete-row"
+                  onClick={() => removeAchievement(index)}
+                  title="Удалить запись"
                 >
-                  &times; {/* Символ крестика */}
+                  УДАЛИТЬ
                 </button>
               </div>
             ))}
+            <button
+              type="button"
+              className="add-log-btn"
+              onClick={() => setAchievementsList([...achievementsList, ""])}
+            >
+              [+] ДОБАВИТЬ СТРОКУ В ЖУРНАЛ
+            </button>
           </div>
 
-          <button type="button" className="btn-add-item" onClick={addAchievementField}>
-            + Добавить еще достижение
-          </button>
+          <div className="form-actions">
+            <RetroButton type="submit" disabled={loading}>
+              {loading ? "ЗАГРУЗКА..." : "ВНЕСТИ В СПИСОК ТУРНИРА"}
+            </RetroButton>
+            <button
+              type="button"
+              className="terminal-cancel"
+              onClick={() => navigate(-1)}
+            >
+              ОТМЕНА
+            </button>
+          </div>
+        </form>
+      </div>
+      <div className="preview-display">
+        <div className="display-scanline"></div>
+        <h3 className="preview-header">ПРЕДПРОСМОТР_КАРТОЧКИ</h3>
+
+        <div className="preview-container">
+          <div
+            className={`preview-card-wrapper ${
+              formData.full_name ? "card-active" : ""
+            }`}
+          >
+            <div className="athlete-card-retro">
+              <div className="photo-container">
+                {formData.previewUrl ? (
+                  <img
+                    src={formData.previewUrl}
+                    className="athlete-pixel-photo"
+                    alt="preview"
+                  />
+                ) : (
+                  <div className="empty-photo">НЕТ_ДАННЫХ</div>
+                )}
+                <div className={`division-badge ${formData.division}`}>
+                  {formData.division[0].toUpperCase()}
+                </div>
+              </div>
+              <div className="name-plate">
+                {formData.full_name || "НЕИЗВЕСТНО"}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div style={{ marginTop: '40px' }}>
-          <Button type="submit" disabled={loading}>
-            {loading ? "Загрузка..." : "Создать спортсмена"}
-          </Button>
+        <div className="preview-footer">
+          <p className="system-msg">БОЕЦ ГОТОВ К ВЫХОДУ НА РИНГ</p>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

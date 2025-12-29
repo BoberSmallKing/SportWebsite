@@ -23,6 +23,23 @@ export function validateField(name, value, form = {}) {
         if (value.length > 500) return "Максимум 500 символов";
         return "";
   
+      case "first_sportsmen":
+        if (!value) return "Выберите первого бойца";
+        return "";
+  
+      case "second_sportsmen":
+        if (!value) return "Выберите второго бойца";
+        if (value === form.first_sportsmen) return "Боец не может драться сам с собой";
+        return "";
+  
+      case "date":
+        if (!value) return "Укажите дату боя";
+        const selectedDate = new Date(value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate < today) return "Нельзя назначить бой на прошедшую дату";
+        return "";
+  
       default:
         return "";
     }

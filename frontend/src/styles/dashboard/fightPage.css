@@ -1,0 +1,252 @@
+/* fightsPage.css */
+.retro-fights-layout {
+  background-color: var(--retro-bg);
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: var(--retro-font);
+}
+
+.fights-navigation-header {
+  max-width: 900px;
+  margin: 0 auto 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.tournament-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.tournament-title {
+  color: var(--retro-gold);
+  font-size: 28px;
+  text-shadow: 4px 4px var(--retro-red-dark);
+  margin: 0;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.tournament-divider {
+  height: 6px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--retro-gold),
+    transparent
+  );
+  width: 80%;
+  margin: 0 auto 40px auto;
+}
+
+.header-spacer {
+  width: 100px;
+  display: block;
+}
+
+.fights-top-nav {
+  max-width: 900px;
+  margin: 0 auto 20px auto;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.fights-list-scroll {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Карточка Матча */
+.retro-match-card {
+  border: var(--retro-border-thick) solid var(--retro-stone);
+  background: var(--retro-blue-dark);
+  padding: 2px; /* Для эффекта двойной рамки */
+  box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.match-category {
+  background: var(--retro-stone);
+  color: var(--retro-gold);
+  padding: 8px 15px;
+  font-size: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.match-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background: linear-gradient(180deg, #111 0%, #000 100%);
+  min-height: 120px;
+}
+
+.match-fighter {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.blue-corner {
+  color: var(--retro-cyan);
+  text-align: left;
+}
+.red-corner {
+  color: var(--retro-red);
+  text-align: right;
+}
+
+.fighter-status {
+  font-size: 8px;
+  margin-bottom: 10px;
+  opacity: 0.7;
+}
+
+.victor .fighter-status {
+  color: var(--retro-green);
+  opacity: 1;
+  text-shadow: 0 0 5px var(--retro-green);
+}
+
+.fighter-name-tag {
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.match-vs-block {
+  padding: 0 20px;
+  text-align: center;
+}
+
+.vs-icon {
+  font-size: 24px;
+  color: var(--retro-gold);
+  font-style: italic;
+  margin-bottom: 5px;
+  text-shadow: 2px 2px #000;
+}
+
+.match-rounds {
+  font-size: 8px;
+  color: var(--gray);
+}
+
+/* Футер */
+.match-footer {
+  border-top: 2px solid var(--retro-stone);
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #050505;
+}
+
+.match-type-flag {
+  font-size: 8px;
+  color: var(--retro-gold-dark);
+}
+
+.match-closed {
+  color: var(--gray);
+  font-size: 8px;
+  border: 1px solid var(--gray);
+  padding: 5px;
+}
+
+.no-data-msg {
+  color: var(--gray);
+  text-align: center;
+  margin-top: 100px;
+  font-size: 14px;
+}
+
+.victor {
+  animation: victor-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes victor-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.win-btn {
+  margin-top: 10px;
+  font-family: var(--retro-font);
+  font-size: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 2px solid;
+  background: transparent;
+  transition: all 0.2s;
+}
+
+.win-btn.blue {
+  color: var(--retro-cyan);
+  border-color: var(--retro-cyan);
+}
+.win-btn.red {
+  color: var(--retro-red);
+  border-color: var(--retro-red);
+}
+
+.win-btn:hover {
+  background: white;
+  color: black;
+  box-shadow: 0 0 10px white;
+}
+
+/* Контейнер рейтинга */
+.rating-counter-wrapper {
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.base-rating {
+  font-size: 10px;
+  color: var(--retro-gold);
+}
+
+.rating-diff {
+  position: absolute;
+  top: -15px;
+  left: 0;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.rating-diff.plus {
+  color: var(--retro-green);
+  text-shadow: 0 0 5px var(--retro-green);
+}
+.rating-diff.minus {
+  color: var(--retro-red);
+  text-shadow: 0 0 5px var(--retro-red);
+}
+
+.anim-status {
+  color: var(--retro-gold);
+  font-size: 8px;
+  animation: blink 0.5s infinite;
+}
+
+.blue-corner .rating-diff {
+  left: 0;
+}
+.red-corner .rating-diff {
+  right: 0;
+}
