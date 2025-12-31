@@ -2,8 +2,9 @@
 .retro-fights-layout {
   background-color: var(--retro-bg);
   min-height: 100vh;
-  padding: 40px 20px;
+  padding: 20px;
   font-family: var(--retro-font);
+  box-sizing: border-box;
 }
 
 .fights-navigation-header {
@@ -12,7 +13,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
 }
 
 .tournament-header {
@@ -22,15 +22,15 @@
 
 .tournament-title {
   color: var(--retro-gold);
-  font-size: 28px;
-  text-shadow: 4px 4px var(--retro-red-dark);
+  font-size: clamp(14px, 5vw, 28px);
+  text-shadow: 2px 2px var(--retro-red-dark);
   margin: 0;
   text-align: center;
   flex-grow: 1;
 }
 
 .tournament-divider {
-  height: 6px;
+  height: 4px;
   background: linear-gradient(
     90deg,
     transparent,
@@ -38,11 +38,17 @@
     transparent
   );
   width: 80%;
-  margin: 0 auto 40px auto;
+  margin: 0 auto 30px auto;
+}
+.header-spacer {
+  width: 100px;
+  display: block;
 }
 
 .header-spacer {
   width: 100px;
+}
+.hide-mobile {
   display: block;
 }
 
@@ -58,22 +64,21 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 }
 
 /* Карточка Матча */
 .retro-match-card {
-  border: var(--retro-border-thick) solid var(--retro-stone);
+  border: 2px solid var(--retro-stone);
   background: var(--retro-blue-dark);
-  padding: 2px; /* Для эффекта двойной рамки */
-  box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.5);
 }
 
 .match-category {
   background: var(--retro-stone);
   color: var(--retro-gold);
-  padding: 8px 15px;
-  font-size: 10px;
+  padding: 6px 12px;
+  font-size: 8px;
   display: flex;
   justify-content: space-between;
 }
@@ -82,15 +87,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 15px;
   background: linear-gradient(180deg, #111 0%, #000 100%);
-  min-height: 120px;
+  min-height: 100px;
 }
 
 .match-fighter {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0; /* Важно для сокращения текста */
 }
 
 .blue-corner {
@@ -115,37 +121,40 @@
 }
 
 .fighter-name-tag {
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: clamp(9px, 3.5vw, 14px);
+  line-height: 1.2;
   word-break: break-word;
+  text-transform: uppercase;
+  margin: 5px 0;
 }
 
 .match-vs-block {
-  padding: 0 20px;
+  padding: 0 10px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .vs-icon {
-  font-size: 24px;
+  font-size: clamp(14px, 6vw, 24px);
   color: var(--retro-gold);
   font-style: italic;
-  margin-bottom: 5px;
   text-shadow: 2px 2px #000;
 }
 
 .match-rounds {
-  font-size: 8px;
-  color: var(--gray);
+  font-size: 7px;
+  color: gray;
 }
 
 /* Футер */
 .match-footer {
-  border-top: 2px solid var(--retro-stone);
-  padding: 10px 15px;
+  border-top: 1px solid var(--retro-stone);
+  padding: 8px 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #050505;
+  font-size: 8px;
 }
 
 .match-type-flag {
@@ -185,14 +194,15 @@
 }
 
 .win-btn {
-  margin-top: 10px;
+  margin-top: 8px;
   font-family: var(--retro-font);
-  font-size: 8px;
-  padding: 5px 10px;
+  font-size: clamp(7px, 2.2vw, 9px);
+  padding: 4px 8px;
   cursor: pointer;
-  border: 2px solid;
+  border: 1px solid;
   background: transparent;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .win-btn.blue {
@@ -203,7 +213,6 @@
   color: var(--retro-red);
   border-color: var(--retro-red);
 }
-
 .win-btn:hover {
   background: white;
   color: black;
@@ -213,29 +222,28 @@
 /* Контейнер рейтинга */
 .rating-counter-wrapper {
   position: relative;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
-
 .base-rating {
-  font-size: 10px;
+  font-size: clamp(7px, 2.5vw, 10px);
   color: var(--retro-gold);
 }
-
 .rating-diff {
   position: absolute;
-  top: -15px;
+  top: -12px;
+  font-size: 10px;
+}
+.blue-corner .rating-diff {
   left: 0;
-  font-size: 12px;
-  font-weight: bold;
 }
-
-.rating-diff.plus {
+.red-corner .rating-diff {
+  right: 0;
+}
+.plus {
   color: var(--retro-green);
-  text-shadow: 0 0 5px var(--retro-green);
 }
-.rating-diff.minus {
+.minus {
   color: var(--retro-red);
-  text-shadow: 0 0 5px var(--retro-red);
 }
 
 .anim-status {
@@ -244,9 +252,20 @@
   animation: blink 0.5s infinite;
 }
 
-.blue-corner .rating-diff {
-  left: 0;
-}
-.red-corner .rating-diff {
-  right: 0;
+@media (max-width: 600px) {
+  .header-spacer {
+    display: none;
+  }
+  .match-main {
+    padding: 10px;
+  }
+  .match-vs-block {
+    padding: 0 5px;
+  }
+  .exit-btn-text {
+    display: none;
+  }
+  .retro-exit-btn {
+    padding: 5px 10px;
+  }
 }

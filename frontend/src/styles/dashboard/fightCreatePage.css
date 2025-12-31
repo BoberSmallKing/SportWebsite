@@ -1,191 +1,260 @@
+/* fightCreatePage.css */
 .versus-layout {
-  height: 100vh;
+  min-height: 100vh;
   background-color: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: white;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: var(--retro-font);
-}
-
-/* Эффект сетки на фоне как в старых играх */
-.versus-grid-bg {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.05) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
-  transform: perspective(500px) rotateX(60deg);
-  bottom: -50%;
-  z-index: 1;
-}
-
-.versus-overlay {
-  display: flex;
-  width: 100%;
-  max-width: 1400px;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 2;
-  padding: 0 50px;
-}
-
-/* Контейнеры для карточек бойцов */
-.fighter-preview-container {
-  flex: 0 0 350px;
-  display: flex;
-  justify-content: center;
-}
-
-.fighter-card-wrapper {
-  width: 300px;
-  background: #0a0a0a;
-  border: 3px solid #333;
-  padding: 10px;
-  position: relative;
   display: flex;
   flex-direction: column;
 }
 
-/* Свечение */
+/* Эффект сетки в перспективе (пол) */
+.versus-grid-bg {
+  position: fixed;
+  width: 200vw;
+  height: 200vh;
+  background-image: linear-gradient(
+      rgba(0, 255, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: perspective(800px) rotateX(60deg);
+  bottom: -40%;
+  left: -50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.versus-top-bar {
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 10;
+}
+
+.versus-content {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 40px;
+  z-index: 1;
+}
+
+/* КОЛОНКИ БОЙЦОВ (УВЕЛИЧЕНЫ) */
+.fighter-column {
+  flex: 0 1 400px; /* Увеличена ширина */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fighter-card-wrapper {
+  width: 100%;
+  background: #0a0a0a;
+  border: 6px solid #333; /* Толще рамка */
+  padding: 15px;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fighter-card-wrapper:hover {
+  transform: scale(1.02);
+}
+
 .blue-glow {
   border-color: var(--retro-cyan);
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.3),
+    inset 0 0 20px rgba(0, 255, 255, 0.1);
 }
+
 .red-glow {
   border-color: var(--retro-red);
-  box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+  box-shadow: 0 0 40px rgba(255, 0, 0, 0.3), inset 0 0 20px rgba(255, 0, 0, 0.1);
 }
 
-.fighter-card-header {
-  text-align: center;
+.corner-tag {
   font-size: 10px;
-  color: #888;
-  margin-bottom: 10px;
-  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: 3px;
+  color: #fff;
+  text-shadow: 0 0 5px currentColor;
 }
 
+/* КОНТЕЙНЕР ФОТО (БОЛЬШОЙ) */
 .fighter-photo-frame {
   width: 100%;
-  height: 380px;
+  height: 450px; /* Значительно увеличено */
   background: #111;
+  border: 2px solid #222;
   overflow: hidden;
-  border: 1px solid #222;
+  position: relative;
+}
+
+/* Градиент поверх фото для кинематографичности */
+.fighter-photo-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 40%);
 }
 
 .fighter-photo-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  image-rendering: pixelated;
+  image-rendering: auto;
 }
 
-.fighter-info-footer {
-  margin-top: 15px;
-  text-align: center;
+.photo-placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #444;
 }
 
 .fighter-name-display {
-  font-size: 18px;
+  margin-top: 20px;
+  font-size: clamp(18px, 3vw, 24px); /* Крупный шрифт */
+  text-align: center;
   color: #fff;
   text-transform: uppercase;
-  margin-bottom: 5px;
-  text-shadow: 2px 2px #000;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 3px 3px 0px #000;
 }
 
-/* Центральная часть */
-.vs-center-container {
-  flex: 1;
+/* ЦЕНТРАЛЬНАЯ ЧАСТЬ */
+.vs-center-column {
+  flex: 0 1 380px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 30px;
 }
 
-.vs-logo-large {
-  font-size: 120px;
-  font-style: italic;
+.vs-badge {
+  font-size: clamp(80px, 15vw, 140px); /* VS Огромный */
   font-weight: 900;
   color: var(--retro-gold);
-  text-shadow: 8px 8px #e74c3c;
+  font-style: italic;
+  text-shadow: 6px 6px 0px var(--retro-red-dark);
   margin-bottom: -20px;
-  z-index: 5;
+  z-index: 2;
 }
 
 .vs-settings-box {
   width: 100%;
-  max-width: 350px;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(5, 5, 5, 0.95);
   border: 2px solid var(--retro-gold);
-  padding: 25px;
-  box-shadow: 0 0 40px rgba(247, 213, 29, 0.3);
+  padding: 30px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8);
 }
 
-.box-header {
-  font-size: 10px;
-  color: var(--retro-gold);
-  text-align: center;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--retro-gold);
-  padding-bottom: 10px;
+/* АДАПТИВНОСТЬ */
+@media (max-width: 1100px) {
+  .versus-content {
+    flex-direction: column;
+    padding: 80px 20px 20px 20px;
+    gap: 50px;
+  }
+
+  .fighter-column {
+    width: 100%;
+    order: 2;
+  }
+
+  .blue-side {
+    order: 1;
+  }
+  .red-side {
+    order: 3;
+  }
+  .vs-center-column {
+    order: 2;
+    width: 100%;
+    max-width: 450px;
+  }
+
+  .fighter-card-wrapper {
+    max-width: 400px;
+  }
+
+  .fighter-photo-frame {
+    height: 400px;
+  }
+
+  .vs-badge {
+    font-size: 80px;
+    margin: 20px 0;
+  }
 }
 
+@media (max-width: 600px) {
+  .fighter-photo-frame {
+    height: 320px;
+  }
+
+  .fighter-card-wrapper {
+    border-width: 4px;
+    padding: 10px;
+  }
+
+  .vs-settings-box {
+    padding: 20px;
+  }
+}
+
+/* Стили формы (инпуты и селекты) */
 .vs-settings-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 }
 
-.retro-checkbox-row {
+.retro-select-group {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #fff;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.retro-select-group label {
   font-size: 9px;
-  cursor: pointer;
-}
-
-.retro-checkbox-row input {
-  cursor: pointer;
-  accent-color: var(--retro-gold);
-}
-
-.versus-top-bar {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 100;
-}
-
-.retro-exit-btn {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
-  padding: 8px 15px;
-  font-family: var(--retro-font);
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.3s;
+  color: var(--retro-gold);
   text-transform: uppercase;
 }
 
-.retro-exit-btn:hover {
-  background: var(--retro-red);
-  border-color: var(--retro-red);
-  box-shadow: 0 0 15px var(--retro-red);
+.retro-select {
+  background: #000;
+  border: 1px solid var(--retro-stone);
+  color: #fff;
+  padding: 10px;
+  font-family: var(--retro-font);
+  font-size: 11px;
+  outline: none;
 }
 
-.retro-select-field:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  border-color: #333;
+.retro-select:focus {
+  border-color: var(--retro-gold);
 }
 
-.retro-select-field-round {
-  background-image: none;
+.retro-checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  color: #fff;
+  cursor: pointer;
+  margin: 10px 0;
 }

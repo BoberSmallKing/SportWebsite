@@ -14,7 +14,7 @@ function CreateFightPage() {
   const redId = searchParams.get("red");
 
   const [fighters, setFighters] = useState({ blue: null, red: null });
-  const [sections, setSections] = useState([]); // Всегда инициализируем массивом
+  const [sections, setSections] = useState([]);
   const [selectedSportId, setSelectedSportId] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -36,20 +36,22 @@ function CreateFightPage() {
         ]);
 
         setFighters({ blue: b.data, red: r.data });
-
         const sectionsData = s.data.results ? s.data.results : s.data;
         setSections(Array.isArray(sectionsData) ? sectionsData : []);
       } catch (err) {
-        console.error("Ошибка инициализации данных:", err);
+        console.error("Ошибка:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    if (blueId && redId) {
-      fetchData();
-    }
+    if (blueId && redId) fetchData();
   }, [blueId, redId]);
+
+  const formatName = (fullName) => {
+    if (!fullName) return "UNKNOWN";
+    return fullName.split(" ").slice(0, 2).join(" ");
+  };
 
   const uniqueSports = Array.from(
     new Map(
@@ -66,7 +68,7 @@ function CreateFightPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!setup.section) {
-      alert("Пожалуйста, выберите спортивную секцию");
+      alert("ВЫБЕРИТЕ СЕКЦИЮ");
       return;
     }
 
@@ -81,78 +83,71 @@ function CreateFightPage() {
       });
       navigate("/dashboard/fights");
     } catch (err) {
-      console.error("Ошибка при создании боя:", err);
-      alert(
-        "Не удалось сохранить бой. Проверьте правильность заполнения полей."
-      );
+      alert("ОШИБКА СОХРАНЕНИЯ ДАННЫХ");
     }
   };
 
   if (loading)
-    return <div className="loading-overlay">ЗАГРУЗКА_СИСТЕМЫ...</div>;
+    return <div className="loading-overlay">СКАНИРОВАНИЕ_БОЙЦОВ...</div>;
 
   return (
     <div className="versus-layout">
       <div className="versus-grid-bg"></div>
 
-      <div className="versus-top-bar">
+      <header className="versus-top-bar">
         <button
           className="retro-exit-btn"
           onClick={() => navigate("/dashboard/team")}
-          type="button"
         >
-          ← НАЗАД
+          ← <span className="hide-mobile">ОТМЕНА</span>
         </button>
-      </div>
+        <div className="vs-header-title">MATCH_PREPARATION</div>
+      </header>
 
-      <div className="versus-overlay">
-        {/* СИНИЙ УГОЛ */}
-        <div className="fighter-preview-container">
+      <div className="versus-content">
+        {/* BLUE CORNER */}
+        <div className="fighter-column blue-side">
           <div className="fighter-card-wrapper blue-glow">
-            <div className="fighter-card-header">СИНИЙ УГОЛ</div>
+            <div className="corner-tag">BLUE_CORNER</div>
             <div className="fighter-photo-frame">
               {fighters.blue?.photo ? (
                 <img src={fighters.blue.photo} alt="Blue" />
               ) : (
-                <div className="photo-placeholder">НЕТ ФОТО</div>
+                <div className="photo-placeholder">NO_DATA</div>
               )}
             </div>
-            <div className="fighter-info-footer">
-              <div className="fighter-name-display">
-                {fighters.blue?.full_name || "Неизвестный"}
-              </div>
+            <div className="fighter-name-display">
+              {formatName(fighters.blue?.full_name)}
             </div>
           </div>
         </div>
 
-        {/* ПАНЕЛЬ НАСТРОЕК */}
-        <div className="vs-center-container">
-          <div className="vs-logo-large">VS</div>
-
+        {/* SETTINGS PANEL */}
+        <div className="vs-center-column">
+          <div className="vs-badge">VS</div>
           <div className="vs-settings-box">
-            <div className="box-header">КОНФИГУРАЦИЯ МАТЧА</div>
+            <div className="box-header">КОНФИГУРАЦИЯ</div>
             <form onSubmit={handleSubmit} className="vs-settings-form">
               <RetroInput
                 type="date"
-                label="ДАТА СОБЫТИЯ"
+                label="ДАТА"
                 required
                 value={setup.date}
                 onChange={(e) => setSetup({ ...setup, date: e.target.value })}
               />
 
-              {/* Выбор вида спорта */}
-              <div className="retro-input-group">
-                <label className="retro-label">ВИД СПОРТА</label>
+              <div className="retro-select-group">
+                <label>СПОРТ</label>
                 <select
-                  className="retro-select-field"
+                  className="retro-select"
                   value={selectedSportId}
                   onChange={(e) => {
                     setSelectedSportId(e.target.value);
-                    setSetup({ ...setup, section: "" }); // Сброс секции при смене спорта
+                    setSetup({ ...setup, section: "" });
                   }}
                   required
                 >
-                  <option value="">-- ВЫБЕРИТЕ СПОРТ --</option>
+                  <option value="">ВЫБРАТЬ...</option>
                   {uniqueSports.map((sport) => (
                     <option key={sport.id} value={sport.id}>
                       {sport.name.toUpperCase()}
@@ -161,11 +156,10 @@ function CreateFightPage() {
                 </select>
               </div>
 
-              {/* Выбор секции (зависит от спорта) */}
-              <div className="retro-input-group">
-                <label className="retro-label">СЕКЦИЯ</label>
+              <div className="retro-select-group">
+                <label>СЕКЦИЯ</label>
                 <select
-                  className="retro-select-field"
+                  className="retro-select"
                   value={setup.section}
                   onChange={(e) =>
                     setSetup({ ...setup, section: e.target.value })
@@ -173,7 +167,7 @@ function CreateFightPage() {
                   disabled={!selectedSportId}
                   required
                 >
-                  <option value="">-- ВЫБЕРИТЕ СЕКЦИЮ --</option>
+                  <option value="">ВЫБРАТЬ...</option>
                   {filteredSections.map((sec) => (
                     <option key={sec.id} value={sec.id}>
                       {sec.name}
@@ -182,10 +176,10 @@ function CreateFightPage() {
                 </select>
               </div>
 
-              <div className="retro-input-group">
-                <label className="retro-label">РАУНДЫ</label>
+              <div className="rounds-row">
                 <RetroInput
-                  type=""
+                  type="number"
+                  label="РАУНДЫ"
                   min="1"
                   max="20"
                   value={setup.count_rounds}
@@ -195,7 +189,7 @@ function CreateFightPage() {
                 />
               </div>
 
-              <div className="retro-checkbox-row">
+              <div className="retro-checkbox-container">
                 <input
                   type="checkbox"
                   id="rank-check"
@@ -204,29 +198,29 @@ function CreateFightPage() {
                     setSetup({ ...setup, is_rating: e.target.checked })
                   }
                 />
-                <label htmlFor="rank-check">РАНГОВЫЙ ПОЕДИНОК</label>
+                <label htmlFor="rank-check">РАНГОВЫЙ БОЙ</label>
               </div>
 
-              <RetroButton type="submit">ЗАРЕГИСТРИРОВАТЬ БОЙ</RetroButton>
+              <div className="btn-submit-wrapper">
+                <RetroButton type="submit">START MATCH</RetroButton>
+              </div>
             </form>
           </div>
         </div>
 
-        {/* КРАСНЫЙ УГОЛ */}
-        <div className="fighter-preview-container">
+        {/* RED CORNER */}
+        <div className="fighter-column red-side">
           <div className="fighter-card-wrapper red-glow">
-            <div className="fighter-card-header">КРАСНЫЙ УГОЛ</div>
+            <div className="corner-tag">RED_CORNER</div>
             <div className="fighter-photo-frame">
               {fighters.red?.photo ? (
                 <img src={fighters.red.photo} alt="Red" />
               ) : (
-                <div className="photo-placeholder">НЕТ ФОТО</div>
+                <div className="photo-placeholder">NO_DATA</div>
               )}
             </div>
-            <div className="fighter-info-footer">
-              <div className="fighter-name-display">
-                {fighters.red?.full_name || "Неизвестный"}
-              </div>
+            <div className="fighter-name-display">
+              {formatName(fighters.red?.full_name)}
             </div>
           </div>
         </div>

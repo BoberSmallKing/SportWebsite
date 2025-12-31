@@ -1,17 +1,40 @@
 .retro-exit-btn {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
-  padding: 8px 15px;
+  border: 1px solid var(--retro-stone);
+  color: var(--retro-stone-light);
   font-family: var(--retro-font);
-  font-size: 12px;
   cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
+  padding: 8px 12px;
+  font-size: clamp(8px, 2.5vw, 12px);
+  white-space: nowrap;
+  transition: all 0.2s;
 }
 
 .retro-exit-btn:hover {
   background: var(--retro-red);
-  border-color: var(--retro-red);
-  box-shadow: 0 0 15px var(--retro-red);
+  color: white;
+}
+
+.retro-btn-primary {
+  background: var(--retro-gold);
+  color: var(--retro-bg-dark);
+  padding: 15px 25px;
+  border: none;
+  font-family: var(--retro-font);
+  font-size: 11px;
+  cursor: pointer;
+  box-shadow: 5px 5px 0px var(--retro-gold-dark);
+  text-transform: uppercase;
+}
+
+.retro-btn-primary:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px var(--retro-gold-dark);
+}
+
+.retro-btn-primary:disabled {
+  background: var(--retro-stone-light);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.6;
 }

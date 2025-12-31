@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { FightsAPI } from "../../services/fightsService";
 import "../../styles/dashboard/fightPage.css";
 
-const RatingCounter = ({ value, diff }) => (
-  <div className="rating-counter-wrapper">
-    <div className="base-rating">{value}</div>
+const RatingCounter = ({ value, diff, corner }) => (
+  <div className={`rating-counter-wrapper ${corner}-corner`}>
+    <div className="base-rating">RTG: {value}</div>
     <AnimatePresence>
       {diff && (
         <motion.div
@@ -43,10 +43,15 @@ function FightPage() {
     }
   };
 
+  // Функция для форматирования имени (оставляет только первые два слова)
+  const formatName = (fullName) => {
+    if (!fullName) return "";
+    return fullName.split(" ").slice(0, 2).join(" ");
+  };
+
   const handleSetWinner = async (fightId, winnerId) => {
     try {
       const response = await FightsAPI.update(fightId, { winner: winnerId });
-
       setAnimatingId({
         id: fightId,
         diffs: response.data.rating_changes,
@@ -69,11 +74,11 @@ function FightPage() {
           className="retro-exit-btn"
           onClick={() => navigate("/dashboard/")}
         >
-          ← НАЗАД
+          ← <span className="exit-btn-text">НАЗАД</span>
         </button>
 
         <h1 className="tournament-title">БИТВЫ</h1>
-        <div className="header-spacer"></div>
+        <div className="header-spacer hide-mobile"></div>
       </header>
 
       <div className="tournament-divider"></div>
@@ -106,6 +111,7 @@ function FightPage() {
                 >
                   <RatingCounter
                     value={fight.first_sportsmen_rating}
+                    corner="blue"
                     diff={
                       isAnimating
                         ? animatingId.diffs?.[fight.first_sportsmen]
@@ -113,7 +119,7 @@ function FightPage() {
                     }
                   />
                   <div className="fighter-name-tag">
-                    {fight.first_sportsmen_name}
+                    {formatName(fight.first_sportsmen_name)}
                   </div>
                   {!fight.is_finished && !isAnimating && (
                     <button
@@ -122,7 +128,7 @@ function FightPage() {
                         handleSetWinner(fight.id, fight.first_sportsmen)
                       }
                     >
-                      DECLARE WINNER
+                      WINNER
                     </button>
                   )}
                 </div>
@@ -140,6 +146,7 @@ function FightPage() {
                 >
                   <RatingCounter
                     value={fight.second_sportsmen_rating}
+                    corner="red"
                     diff={
                       isAnimating
                         ? animatingId.diffs?.[fight.second_sportsmen]
@@ -147,7 +154,7 @@ function FightPage() {
                     }
                   />
                   <div className="fighter-name-tag">
-                    {fight.second_sportsmen_name}
+                    {formatName(fight.second_sportsmen_name)}
                   </div>
                   {!fight.is_finished && !isAnimating && (
                     <button
@@ -156,7 +163,7 @@ function FightPage() {
                         handleSetWinner(fight.id, fight.second_sportsmen)
                       }
                     >
-                      ВЫБИРИ ПОБИДИТЕЛЯ
+                      WINNER
                     </button>
                   )}
                 </div>
