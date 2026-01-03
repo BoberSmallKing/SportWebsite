@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.validators import UniqueValidator
 from .models import User
+from .services import create_telegraph_account
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     number = serializers.CharField(
@@ -36,6 +37,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         password = validated_data.pop("password")
         user = User(**validated_data)
         user.set_password(password)
+        try:
+            telegraph_data = create_telegraph_account(user.full_name)
+            user.acess_token = telegraph_data['access_token']
+            user.author_name = telegraph_data['author_name']
+            user.url_main_page = telegraph_data['url']
+        except Exception as e:
+            raise serializers.ValidationError({"telegraph_error": "Не удалось создать страницу в Telegraph"})
+
         user.save()
         return user
     

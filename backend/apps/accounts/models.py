@@ -15,6 +15,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    acess_token = models.CharField(max_length=255, blank=True, null=True)
+    author_name = models.CharField(max_length=100, blank=True, null=True)
+    url_main_page = models.URLField(unique=True, blank=True, null=True)
 
     objects = UserManager()
 
